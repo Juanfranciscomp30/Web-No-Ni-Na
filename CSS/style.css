@@ -727,3 +727,26 @@ body {
     .nudge-text { font-size: .82rem; padding: .65rem .85rem; }
     .footer { padding-bottom: 5.5rem; }
 }
+
+/* ---------- Título "NO NI NÁ" del hero ----------
+   El brillo va en UNA capa detrás de la palabra entera (filter: drop-shadow)
+   y no en cada letra: con text-shadow por letra, el halo de cada letra
+   tapaba a la anterior y en iPhone salía un borrón rosa. */
+.hero-title .neon-pink,
+.hero-title .neon-pink .char { text-shadow: none; }
+.hero-title .neon-pink {
+    color: #ffd2ff;
+    letter-spacing: .03em;
+    filter: drop-shadow(0 0 1px #ff00ff) drop-shadow(0 0 6px rgba(255, 0, 255, .85)) drop-shadow(0 0 18px rgba(255, 0, 255, .55));
+    animation: flickerGlow 5s infinite;
+}
+@keyframes flickerGlow {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        filter: drop-shadow(0 0 1px #ff00ff) drop-shadow(0 0 6px rgba(255, 0, 255, .85)) drop-shadow(0 0 18px rgba(255, 0, 255, .55));
+        opacity: 1;
+    }
+    20%, 24%, 55% { filter: drop-shadow(0 0 1px rgba(255, 0, 255, .6)); opacity: .8; }
+}
+@media (max-width: 576px) {
+    .hero-title .neon-pink { letter-spacing: .05em; }
+}
