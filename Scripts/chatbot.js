@@ -40,7 +40,7 @@ const FAQS = [
     {
         id: "zona",
         q: "¿Hasta dónde os desplazáis?",
-        a: `Somos de ${NONINA.zona}, pero vamos a donde haga falta. Dinos dónde es y lo vemos.`,
+        a: "Somos de Málaga y tocamos en toda la provincia y la Costa del Sol. También salimos fuera: hemos tocado en Granada y en Burgos. Dinos dónde es y te damos precio con el desplazamiento incluido.",
         keys: ["zona", "donde", "desplaz", "viaj", "lejos", "provincia", "pueblo", "sitio", "malaga", "alhaurin", "kilometro"]
     },
     {
@@ -62,10 +62,10 @@ const FAQS = [
         keys: ["sorpresa", "sorprender", "despedida", "cumple", "cumpleanos", "aniversario"]
     },
     {
-        id: "merch",
-        q: "¿Vendéis merchandising?",
-        a: "¡Sí! Camisetas, sudaderas, gorras, abanicos y más. Pídelo por WhatsApp y te lo apartamos.",
-        keys: ["merch", "camiseta", "sudadera", "gorra", "abanico", "pulsera", "ropa", "comprar", "tienda"]
+        id: "premios",
+        q: "¿Habéis ganado algún premio?",
+        a: "¡Unos cuantos! 🏆 Mejor Charanga y Mejor Percusión 2025 en el Festival Nacional de Charangas de Poza de la Sal (Burgos), y Primer Premio en el VI Festival de Charangas Villa de Padul 2026. En 2026 volvimos a Poza como charanga invitada. Tienes los vídeos en la sección de Premios.",
+        keys: ["premio", "premios", "ganado", "ganador", "concurso", "festival", "campeon", "mejor charanga", "poza", "padul", "trofeo", "logro"]
     }
 ];
 
@@ -136,6 +136,7 @@ const Chat = (() => {
             { label: "💬 Ir directo a WhatsApp", cls: "wa", action: directWhatsApp },
             { label: "💰 Precio", action: () => answer("precio") },
             { label: "📅 ¿Tenéis mi fecha?", action: () => answer("dispo") },
+            { label: "🏆 Premios", action: () => answer("premios") },
             { label: "🥳 Sorpresas", action: () => answer("sorpresa") },
             { label: "🎺 Repertorio", action: () => answer("repertorio") }
         ]);
@@ -183,10 +184,12 @@ const Chat = (() => {
             lead.fecha = value;
             step = "lugar";
             await botSay("¿Y dónde será la fiesta? 📍 <small>(pueblo o ciudad)</small>");
-            setPlaceholder("Ej: Coín, Cártama, Málaga…");
+            setPlaceholder("Ej: Marbella, Antequera, Málaga…");
             setQuick([
-                { label: "Alhaurín el Grande", action: () => next("Alhaurín el Grande") },
-                { label: "Málaga capital", action: () => next("Málaga capital") }
+                { label: "Málaga capital", action: () => next("Málaga capital") },
+                { label: "Costa del Sol", action: () => next("Costa del Sol") },
+                { label: "Provincia de Málaga", action: () => { setPlaceholder("¿Qué pueblo?"); input.focus(); } },
+                { label: "Fuera de Málaga", action: () => { setPlaceholder("¿Dónde es?"); input.focus(); } }
             ]);
             input.focus({ preventScroll: true });
         } else if (step === "lugar") {
@@ -284,7 +287,7 @@ const Chat = (() => {
         toggle.setAttribute("aria-expanded", "true");
         if (!started) {
             started = true;
-            await botSay("¡Hola! Soy <strong>NoNiBot</strong> 🐰🎺", 450);
+            await botSay("¡Hola! Soy <strong>NoNiBot</strong> 🐰🎺 de la charanga ganadora de <strong>Mejor Charanga 2025</strong> 🏆", 450);
             if (mode === "contratar") return startLead();
             await botSay("¿Tienes una boda, feria, despedida o fiesta? Te pongo <strong>directo en WhatsApp con la charanga</strong> en menos de un minuto.", 600);
             mainMenu();

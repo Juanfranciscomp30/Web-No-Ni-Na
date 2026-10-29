@@ -29,30 +29,6 @@ const isTouch = window.matchMedia("(hover: none)").matches;
     document.getElementById("f-fecha").min = new Date().toISOString().split("T")[0];
 })();
 
-/* ---------- Merchandising ---------- */
-(() => {
-    const grid = document.getElementById("merch-grid");
-    NONINA.merch.forEach(p => {
-        const precio = p.precio ? `${p.precio} €` : "Consultar";
-        const col = document.createElement("div");
-        col.className = "col-sm-6 col-lg-4 reveal";
-        col.innerHTML = `
-            <article class="card-neon tilt merch-card">
-                <div class="merch-visual">
-                    ${p.tag ? `<span class="merch-tag">${p.tag}</span>` : ""}
-                    <span class="emoji">${p.emoji}</span>
-                    <img src="../Images/LogoNoNiNa.jpg" alt="">
-                </div>
-                <h3>${p.nombre}</h3>
-                <p>${p.desc}</p>
-                <div class="merch-price">${precio}</div>
-                <a class="btn btn-neon-blue" target="_blank" rel="noopener"
-                   href="${waLink(`¡Hola No Ni Ná! Me interesa el merch: ${p.nombre}. ¿Precio y tallas disponibles?`)}">🛒 Lo quiero</a>
-            </article>`;
-        grid.appendChild(col);
-    });
-})();
-
 /* ---------- Entrada del hero ---------- */
 (() => {
     // Partimos el título en letras para animarlas
@@ -92,9 +68,15 @@ if (!reduceMotion) {
             scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none none" }
         });
     });
-    gsap.from(".chip", {
-        scale: 0, opacity: 0, stagger: 0.05, duration: 0.4, ease: "back.out(2)",
-        scrollTrigger: { trigger: ".chips", start: "top 85%" }
+    gsap.utils.toArray(".chips").forEach(group => {
+        gsap.fromTo(group.querySelectorAll(".chip"),
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, stagger: 0.05, duration: 0.4, ease: "back.out(2)", clearProps: "transform,opacity",
+              scrollTrigger: { trigger: group, start: "top 85%" } });
+    });
+    gsap.from(".award-medal", {
+        scale: 0, rotate: -200, stagger: 0.15, duration: 0.8, ease: "back.out(1.8)",
+        scrollTrigger: { trigger: "#premios", start: "top 70%" }
     });
     gsap.from(".step-num", {
         scale: 0, rotate: 360, stagger: 0.2, duration: 0.7, ease: "back.out(1.7)",
